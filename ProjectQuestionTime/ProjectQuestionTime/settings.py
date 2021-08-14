@@ -69,7 +69,7 @@ ROOT_URLCONF = 'ProjectQuestionTime.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,9 +129,7 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_URL = 'accounts/login/'
-
 LOGIN_REDIRECT_URL = "/"
-
 LOGOUT_REDIRECT_URL = "/"
 
 
@@ -149,7 +147,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'app_users.CustomUser'
 
 # NOTE: django-crispy-forms
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # NOTE: django.contrib.sites
 SITE_ID = 1
@@ -157,3 +155,11 @@ SITE_ID = 1
 # NOTE: django-allauth
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = (True)
+
+# NOTE: django-REST-framework
+REST_FRAMEWORK= {
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
