@@ -16,6 +16,16 @@ urlpatterns = [
     path(
         "questions/<slug:slug>/answer/",
         aqv.AnswerCreateAPIView.as_view(),
-        name='create-answer'
+        name='answer-create'
+    ),
+    path(
+        "answers/<int:pk>",
+        aqv.AnswerRetrieveUpdateDestroyAPIView.as_view(),
+        name='answer-detail'
+    ),
+    path(
+        "answers/<int:pk>/like/",
+        aqv.AnswerLikeAPIView.as_view(),
+        name='answer-like'
     )
 ]

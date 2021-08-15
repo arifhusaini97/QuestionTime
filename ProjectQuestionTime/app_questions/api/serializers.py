@@ -21,6 +21,12 @@ class AnswerSerializer(serializers.ModelSerializer):
     def get_updated_at(self, instance):
         return instance.created_at.strftime("%B %d, %Y")
 
+    def get_created_by(self, instance):
+        return instance.created_by
+
+    def get_updated_by(self, instance):
+        return instance.updated_by
+
     def get_likes_count(self, instance):
         return instance.voters.count()
     
