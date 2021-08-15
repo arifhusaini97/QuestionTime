@@ -1,13 +1,22 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <app-nav-bar></app-nav-bar>
   </div>
-  <router-view/>
+  <router-view />
 </template>
+<script>
+import AppNavBar from './components/NavBar.vue';
+
+export default {
+  name: 'App',
+  components: {
+    AppNavBar,
+  },
+};
+</script>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -26,5 +35,15 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+} */
+
+html,
+body {
+  height: 100%;
+  font-family: 'Playfair Display', serif;
+}
+
+.btn:focus {
+  box-shadow: none !important;
 }
 </style>
