@@ -1,27 +1,27 @@
 from django.db import models
 from django.conf import settings
+from django.db.models.fields import related
 
-def base_record():
+
+class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING,
+        related_name='questions_created_by'
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING,
+        related_name='questions_updated_by'
     )
-
-
-class Question(models.Model):
-    base_record()
     content = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='questions'
+        related_name='questions_author'
     )
 
     def __str__(self):
@@ -29,20 +29,32 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    base_record()
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.DO_NOTHING,
+        related_name='answers_created_by'
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.DO_NOTHING,
+        related_name='answers_updated_by'
+    )
     body = models.TextField()
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
-        related_name='answers'
+        related_name='answers_question'
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='answer_author'
     )
     voters = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name="votes"
+        related_name="answer_voters"
     )
 
     def __str__(self):
