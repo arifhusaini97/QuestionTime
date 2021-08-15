@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 
     'crispy_forms',
+    'webpack_loader',
 
     'app_users',
     'app_questions',
@@ -168,4 +169,11 @@ REST_FRAMEWORK= {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 2
+}
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'dist/',
+        'STATS_FILE': BASE_DIR / 'frontend' / 'webpack-stats.json'
+    }
 }
