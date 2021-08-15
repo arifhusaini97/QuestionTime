@@ -143,20 +143,20 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# NOTE: Custom User Model
+# INFO: Custom User Model
 AUTH_USER_MODEL = 'app_users.CustomUser'
 
-# NOTE: django-crispy-forms
+# INFO: django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# NOTE: django.contrib.sites
+# INFO: django.contrib.sites
 SITE_ID = 1
 
-# NOTE: django-allauth
+# INFO: django-allauth
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = (True)
 
-# NOTE: django-REST-framework
+# INFO: django-REST-framework
 REST_FRAMEWORK= {
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework.authentication.TokenAuthentication',
