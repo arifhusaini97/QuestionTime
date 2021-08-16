@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="container">
+    <div class="container mt-2">
       <div v-for="question in questions" :key="question.id">
         <p class="mb-0">
           Posted by:
@@ -17,6 +17,16 @@
         <p>Answers: {{ question.answers_count }}</p>
         <hr />
       </div>
+      <div class="my-4">
+        <p v-show="loadingQuestion">...loading...</p>
+        <button
+          v-show="next"
+          @click="getQuestions"
+          class="btn btn-sm btn-outline-success"
+        >
+          Load More
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -29,13 +39,25 @@ export default {
   data() {
     return {
       questions: [],
+      next: null,
+      loadingQuestion: false,
     };
   },
   methods: {
     getQuestions() {
-      const endpoint = '/api/questions/';
+      let endpoint = '/api/questions/';
+      if (this.next) {
+        endpoint = this.next;
+      }
+      this.loadingQuestion = true;
       apiService(endpoint).then((data) => {
         this.questions.push(...data.results);
+        this.loadingQuestion = false;
+        if (data.next) {
+          this.next = data.next;
+        } else {
+          this.next = null;
+        }
       });
     },
   },
