@@ -16,12 +16,12 @@ import apiService from '../common/api.service';
 
 export default {
   name: 'Question',
-  // props: {
-  //   slug: {
-  //     type: String,
-  //     required: true,
-  //   },
-  // },
+  props: {
+    slug: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       question: {},
@@ -32,7 +32,7 @@ export default {
       document.title = title;
     },
     getQuestionData() {
-      const endpoint = `/api/questions/${this.$route.params.slug}/`;
+      const endpoint = `/api/questions/${this.slug}/`;
       apiService(endpoint).then((data) => {
         this.question = data;
         this.setPageTitle(data.content);

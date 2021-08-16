@@ -9,9 +9,11 @@ const routes = [
     component: Home,
   },
   {
+    // with props: true, the slug parameter gets passed as a prop to the component
     path: '/question/:slug',
     name: 'Question',
     component: Question,
+    props: true,
   },
 ];
 
