@@ -6,11 +6,23 @@
 </template>
 <script>
 import AppNavBar from './components/NavBar.vue';
+// INFO: @ symbol start from src file
+import apiService from '@/common/api.service';
 
 export default {
   name: 'App',
   components: {
     AppNavBar,
+  },
+  methods: {
+    async setUserInfo() {
+      const data = await apiService('/api/user/');
+      const requestUser = data.username;
+      window.localStorage.setItem('username', requestUser);
+    },
+  },
+  created() {
+    this.setUserInfo();
   },
 };
 </script>

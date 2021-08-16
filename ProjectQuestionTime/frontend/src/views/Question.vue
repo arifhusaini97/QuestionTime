@@ -43,6 +43,8 @@
         v-for="(answer, index) in answers"
         :key="index"
         :answer="answer"
+        :requestUser="requestUser"
+        @delete-answer="deleteAnswer"
       />
       <div class="my-4">
         <p v-show="loadingAnswers">...loading...</p>
@@ -59,8 +61,8 @@
 </template>
 
 <script>
-import apiService from '@/common/api.service';
 // INFO: @ symbol start from src file
+import apiService from '@/common/api.service';
 import AppAnswer from '@//components/Answer.vue';
 
 export default {
@@ -84,6 +86,7 @@ export default {
       showForm: false,
       next: null,
       loadingAnswers: false,
+      requestUser: null,
     };
   },
   methods: {
@@ -97,6 +100,9 @@ export default {
         this.userHasAnswered = data.user_has_answered;
         this.setPageTitle(data.content);
       });
+    },
+    setRequestUser() {
+      this.requestUser = window.localStorage.getItem('username');
     },
     getQuestionAnswers() {
       let endpoint = `/api/questions/${this.slug}/answers/`;
@@ -134,10 +140,24 @@ export default {
         this.error = "You can't send an empty answer!";
       }
     },
+    async deleteAnswer(answer) {
+      const endpoint = `/api/answers/${answer.id}/`;
+      try {
+        await apiService(endpoint, 'DELETE');
+        // INFO: async-await allow the system wait for the rseult
+        // INFO: before excute other code. So doesn't need to use then.
+        // this.$delete(this.answers, this.answers.indexOf(answer));
+        this.answers.splice(this.answers.indexOf(answer), 1);
+        this.userHasAnswered = false;
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   created() {
     this.getQuestionData();
     this.getQuestionAnswers();
+    this.setRequestUser();
   },
 };
 </script>

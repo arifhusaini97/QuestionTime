@@ -6,6 +6,7 @@ router = DefaultRouter()
 
 router.register(r"questions", aqv.QuestionViewSet)
 
+# ! The url is trailing backslash sensitive.
 urlpatterns = [
     path("", include(router.urls)),
     path(
@@ -19,7 +20,7 @@ urlpatterns = [
         name='answer-create'
     ),
     path(
-        "answers/<int:pk>",
+        "answers/<int:pk>/",
         aqv.AnswerRetrieveUpdateDestroyAPIView.as_view(),
         name='answer-detail'
     ),
