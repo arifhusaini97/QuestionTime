@@ -1,20 +1,61 @@
 <template>
   <div class="home">
     <div class="container">
-      <img alt="Vue logo" src="../assets/logo.png" />
-      <HelloWorld msg="Welcome to Your Vue.js App!!!!!" />
+      <div v-for="question in questions" :key="question.id">
+        <p class="mb-0">
+          Posted by:
+          <span class="question-author-name">{{ question.author }}</span>
+        </p>
+        <h2>
+          <router-link
+            :to="{ name: 'Question', params: { slug: question.slug } }"
+            class="question-link"
+          >
+            {{ question.content }}
+          </router-link>
+        </h2>
+        <p>Answers: {{ question.answers_count }}</p>
+        <hr />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import apiService from '../common/api.service';
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      questions: [],
+    };
+  },
+  methods: {
+    getQuestions() {
+      const endpoint = '/api/questions/';
+      apiService(endpoint).then((data) => {
+        this.questions.push(...data.results);
+      });
+    },
+  },
+  created() {
+    this.getQuestions();
+    console.log(this.questions);
   },
 };
 </script>
+<style scoped>
+.question-author-name {
+  font-weight: bold;
+  color: #dc3545;
+}
+.question-link {
+  font-weight: bold;
+  color: black;
+}
+.question-link:hover {
+  color: rgb(71, 71, 71);
+  text-decoration: none;
+}
+</style>
