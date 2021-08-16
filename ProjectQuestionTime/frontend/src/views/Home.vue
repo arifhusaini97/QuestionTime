@@ -8,7 +8,7 @@
         </p>
         <h2>
           <router-link
-            :to="{ name: 'Question', params: { slug: question.slug } }"
+            :to="{ name: 'question', params: { slug: question.slug } }"
             class="question-link"
           >
             {{ question.content }}
@@ -25,7 +25,7 @@
 import apiService from '../common/api.service';
 
 export default {
-  name: 'Home',
+  name: 'home',
   data() {
     return {
       questions: [],

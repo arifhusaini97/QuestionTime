@@ -15,7 +15,7 @@
 import apiService from '../common/api.service';
 
 export default {
-  name: 'Question',
+  name: 'question',
   props: {
     slug: {
       type: String,

@@ -1,19 +1,22 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light my-navbar">
     <div class="container">
-      <router-link :to="{ name: 'Home' }" class="navbar-brand">
+      <router-link :to="{ name: 'home' }" class="navbar-brand">
         QuestionTime
       </router-link>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <router-link :to="{ name: 'Home' }" class="btn btn-sm btn-success">
+            <router-link :to="{ name: 'home' }" class="btn btn-sm btn-success">
               Home
             </router-link>
           </li>
           <li class="nav-item mx-2">
-            <router-link :to="{ name: 'Home' }" class="btn btn-sm btn-danger">
-              Add Question
+            <router-link
+              :to="{ name: 'question-editor' }"
+              class="btn btn-sm btn-danger"
+            >
+              Ask Question
             </router-link>
           </li>
           <li class="nav-item">

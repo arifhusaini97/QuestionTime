@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().order_by("-created_at")
     lookup_field = "slug"
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
@@ -62,22 +62,22 @@ class AnswerRetrieveUpdateDestroyAPIView(
     serializer_class = AnswerSerializer
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
 
+
 class AnswerLikeAPIView(APIView):
     serializer_class = AnswerSerializer
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request,pk):
+    def delete(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)
         user = request.user
 
         answer.voters.remove(user)
         answer.save()
 
-        serializer_context ={"request": request}
+        serializer_context = {"request": request}
         serializer = self.serializer_class(answer, context=serializer_context)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
     def post(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)
@@ -86,7 +86,7 @@ class AnswerLikeAPIView(APIView):
         answer.voters.add(user)
         answer.save()
 
-        serializer_context ={"request": request}
+        serializer_context = {"request": request}
         serializer = self.serializer_class(answer, context=serializer_context)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
