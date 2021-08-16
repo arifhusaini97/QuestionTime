@@ -8,11 +8,21 @@
       </p>
       <p>{{ question.created_at }}</p>
     </div>
+    <hr />
+    <div class="container">
+      <AppAnswer
+        v-for="(answer, index) in answers"
+        :key="index"
+        :answer="answer"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import apiService from '../common/api.service';
+import apiService from '@/common/api.service';
+// INFO: @ symbol start from src file
+import AppAnswer from '@//components/Answer.vue';
 
 export default {
   name: 'question',
@@ -22,9 +32,13 @@ export default {
       required: true,
     },
   },
+  components: {
+    AppAnswer,
+  },
   data() {
     return {
       question: {},
+      answers: [],
     };
   },
   methods: {
@@ -38,10 +52,17 @@ export default {
         this.setPageTitle(data.content);
       });
     },
+    getQuestionAnswers() {
+      const endpoint = `/api/questions/${this.slug}/answers/`;
+      apiService(endpoint).then((data) => {
+        this.answers = data.results;
+        this.setPageTitle('Answers');
+      });
+    },
   },
   created() {
     this.getQuestionData();
-    document.title = 'QuestionTime';
+    this.getQuestionAnswers();
   },
 };
 </script>
