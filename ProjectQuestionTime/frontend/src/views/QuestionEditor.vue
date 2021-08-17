@@ -29,6 +29,12 @@ export default {
       error: null,
     };
   },
+  props: {
+    slug: {
+      type: String,
+      required: false,
+    },
+  },
   methods: {
     onSubmit() {
       if (!this.question_body) {
@@ -36,8 +42,12 @@ export default {
       } else if (this.question_body.length > 240) {
         this.error = 'Ensure this field has no more than 240 characters!';
       } else {
-        const endpoint = '/api/questions/';
-        const method = 'POST';
+        let endpoint = '/api/questions/';
+        let method = 'POST';
+        if (this.slug === undefined) {
+          endpoint += `${this.slug}/`;
+          method = 'PUT';
+        }
         apiService(endpoint, method, { content: this.question_body }).then(
           (response) => {
             this.$router.push({
@@ -48,6 +58,17 @@ export default {
         );
       }
     },
+  },
+  async beforeRouteEnter(to, from, next) {
+    if (to.params.slug !== undefined) {
+      const endpoint = `/api/questions/${to.params.slug}/`;
+      const data = await apiService(endpoint);
+      return next((vm) => {
+        const vmTemp = vm;
+        vmTemp.question_body = data.content;
+      });
+    }
+    return next();
   },
   created: () => {
     document.title = 'Editor - QuestionTime';

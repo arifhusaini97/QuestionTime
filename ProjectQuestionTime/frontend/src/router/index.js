@@ -18,9 +18,11 @@ const routes = [
     props: true,
   },
   {
-    path: '/ask',
+    // INFO: the ? indicates an optional parameter
+    path: '/ask/:slug?',
     name: 'question-editor',
     component: QuestionEditor,
+    props: true,
   },
 
   {

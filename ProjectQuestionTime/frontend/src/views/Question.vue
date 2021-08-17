@@ -2,6 +2,7 @@
   <div class="single-question mt-2">
     <div class="container">
       <h1>{{ question.content }}</h1>
+      <app-question-actions v-if="isQuestionAuthor" :slug="question.slug" />
       <p class="mb-0">
         Posted by:
         <span class="question-author-name">{{ question.author }}</span>
@@ -64,6 +65,7 @@
 // INFO: @ symbol start from src file
 import apiService from '@/common/api.service';
 import AppAnswer from '@//components/Answer.vue';
+import AppQuestionActions from '@//components/QuestionActions.vue';
 
 export default {
   name: 'question',
@@ -75,6 +77,7 @@ export default {
   },
   components: {
     AppAnswer,
+    AppQuestionActions,
   },
   data() {
     return {
@@ -88,6 +91,11 @@ export default {
       loadingAnswers: false,
       requestUser: null,
     };
+  },
+  computed: {
+    isQuestionAuthor() {
+      return this.question.author === this.requestUser;
+    },
   },
   methods: {
     setPageTitle(title) {
