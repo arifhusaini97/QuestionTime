@@ -1,45 +1,49 @@
 <template>
   <div class="single-question mt-2">
-    <div class="container">
-      <h1>{{ question.content }}</h1>
-      <app-question-actions v-if="isQuestionAuthor" :slug="question.slug" />
-      <p class="mb-0">
-        Posted by:
-        <span class="question-author-name">{{ question.author }}</span>
-      </p>
-      <p>{{ question.created_at }}</p>
+    <div v-if="question">
+      <div class="container">
+        <h1>{{ question.content }}</h1>
+        <app-question-actions v-if="isQuestionAuthor" :slug="question.slug" />
+        <p class="mb-0">
+          Posted by:
+          <span class="question-author-name">{{ question.author }}</span>
+        </p>
+        <p>{{ question.created_at }}</p>
+      </div>
+      <hr />
+      <div class="container">
+        <div v-if="userHasAnswered">
+          <p class="answer-added">You've written an answer</p>
+        </div>
+        <div v-else-if="showForm">
+          <form class="card" @submit.prevent="onSubmit">
+            <div class="card-header px-3">Answer the Question</div>
+            <div class="card-block">
+              <textarea
+                rows="5"
+                class="form-control"
+                placeholder="Share your knowledge!"
+                v-model="newAnswerBody"
+              ></textarea>
+            </div>
+            <div class="card-footer px-3">
+              <button type="submit" class="btn btn-sm btn-success">
+                Submit Your Answer
+              </button>
+            </div>
+          </form>
+          <p v-if="error" class="error mt-2">{{ error }}</p>
+        </div>
+        <div v-else class="btn btn-sm btn-success" @click="showForm = true">
+          Answer the Question
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <h1 id="not-found"><span>404 - Question Not Found</span></h1>
     </div>
     <hr />
-    <div class="container">
-      <div v-if="userHasAnswered">
-        <p class="answer-added">You've written an answer</p>
-      </div>
-      <div v-else-if="showForm">
-        <form class="card" @submit.prevent="onSubmit">
-          <div class="card-header px-3">Answer the Question</div>
-          <div class="card-block">
-            <textarea
-              rows="5"
-              class="form-control"
-              placeholder="Share your knowledge!"
-              v-model="newAnswerBody"
-            ></textarea>
-          </div>
-          <div class="card-footer px-3">
-            <button type="submit" class="btn btn-sm btn-success">
-              Submit Your Answer
-            </button>
-          </div>
-        </form>
-        <p v-if="error" class="error mt-2">{{ error }}</p>
-      </div>
-      <div v-else class="btn btn-sm btn-success" @click="showForm = true">
-        Answer the Question
-      </div>
-    </div>
-
-    <hr />
-    <div class="container">
+    <div v-if="question" class="container">
       <app-answer
         v-for="answer in answers"
         :key="answer.id"
@@ -104,9 +108,14 @@ export default {
     getQuestionData() {
       const endpoint = `/api/questions/${this.slug}/`;
       apiService(endpoint).then((data) => {
-        this.question = data;
-        this.userHasAnswered = data.user_has_answered;
-        this.setPageTitle(data.content);
+        if (data) {
+          this.question = data;
+          this.userHasAnswered = data.user_has_answered;
+          this.setPageTitle(data.content);
+        } else {
+          this.question = null;
+          this.setPageTitle('404 - Page Not Found ');
+        }
       });
     },
     setRequestUser() {
@@ -182,5 +191,10 @@ export default {
 .error {
   font-weight: bold;
   color: red;
+}
+
+#not-found {
+  color: red;
+  text-align: center;
 }
 </style>

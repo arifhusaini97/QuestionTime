@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue';
 import Question from '@/views/Question.vue';
 import QuestionEditor from '@/views/QuestionEditor.vue';
 import AnswerEditor from '@/views/AnswerEditor.vue';
+import NotFound from '@/views/NotFound.vue';
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     name: 'answer-editor',
     component: AnswerEditor,
     props: true,
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'page-not-found',
+    component: NotFound,
   },
 ];
 
