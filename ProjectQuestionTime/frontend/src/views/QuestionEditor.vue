@@ -44,7 +44,7 @@ export default {
       } else {
         let endpoint = '/api/questions/';
         let method = 'POST';
-        if (this.slug === undefined) {
+        if (this.slug !== undefined) {
           endpoint += `${this.slug}/`;
           method = 'PUT';
         }
