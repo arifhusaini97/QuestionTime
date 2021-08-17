@@ -40,9 +40,9 @@
 
     <hr />
     <div class="container">
-      <AppAnswer
-        v-for="(answer, index) in answers"
-        :key="index"
+      <app-answer
+        v-for="answer in answers"
+        :key="answer.id"
         :answer="answer"
         :requestUser="requestUser"
         @delete-answer="deleteAnswer"
